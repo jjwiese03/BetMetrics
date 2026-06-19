@@ -9,8 +9,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/mathjs@12.4.2/lib/browser/math.js"></script>
     <script src="logic.js" defer></script>
+    <script src="football.js" defer></script>
 </head>
 <body>
+    <canvas style="display: none; position: absolute;" id="football" width="500" height="500"></canvas>
     <div style="display: flex; width: 100vw; height: 100%; flex-direction: column; align-items: center;">
         <div style="background-color: white; width: 80%; max-width: 700px; text-align: center; border-radius: 20px; padding: 0 20px 30px 20px; margin-top: 50px;">
             <h3 class="not-selectable" style="margin-bottom: 30px; font-weight: 500; ">Betting Odds</h3>
@@ -30,7 +32,7 @@
             </div>
         </div>
         
-        <div class="not-selectable" style="display: flex; align-items: center; flex-direction: column; color: white; width: 100vw; border-radius: 25px 25px 0 0 ; background-color: var(--red); margin-top: auto; padding: 20px; box-sizing: border-box;">
+        <div class="not-selectable" id="bottom-part" style="display: flex; align-items: center; flex-direction: column; color: white; width: 100vw; border-radius: 25px 25px 0 0 ; background-color: var(--red); margin-top: auto; padding: 20px; box-sizing: border-box;">
             <h1 style="text-align: center; color: white;">Results</h1>
             <div style="display: flex; justify-content: space-between; width: 80%; max-width: 600px; gap: 20px;">
                 <div class="card cStyle1 not-selectable">
@@ -48,7 +50,7 @@
                 </div>
             </div>
 
-            <div style="margin-top: 40px;" id="ExpValue">
+            <div style="margin-top: 40px; text-align: center;" id="ExpValue">
                 On Average you loose 20% of your bet amount on every bet.
             </div>
         </div>
