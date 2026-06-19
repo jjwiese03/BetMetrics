@@ -23,8 +23,6 @@ const X = document.getElementById("X");
 const zwei = document.getElementById("2");
 const ExpValue = document.getElementById("ExpValue");
 
-console.log(eins, X, zwei, ExpValue)
-
 function change () {
     const result = calcExpVal(
         Number(betting_odd_1.value),
@@ -32,9 +30,12 @@ function change () {
         Number(betting_odd_2.value)
     );
 
-    eins.innerHTML = (result[0][0] * 100).toFixed(2) + "%";
-    X.innerHTML = (result[1][0] * 100).toFixed(2) + "%";
-    zwei.innerHTML = (result[2][0] * 100).toFixed(2) + "%";
+    const roundTo = (innerWidth <=400) ? 0 : 2;
+
+    eins.innerHTML = (result[0][0] * 100).toFixed(roundTo) + "%";
+    X.innerHTML = (result[1][0] * 100).toFixed(roundTo) + "%";
+    zwei.innerHTML = (result[2][0] * 100).toFixed(roundTo) + "%";
+
 
     ExpValue.innerHTML = "On average you " + ((result[3][0] > 0) ? "win " : "lose ") + Math.abs(result[3][0] * 100).toFixed(2)  + "% of your bet amount on every bet.";
 }

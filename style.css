@@ -32,15 +32,16 @@ input[type="number"] {
 body{
     margin: 0;
     font-family: "Inter", "Open Sans", sans-serif;
-    /* background: linear-gradient(180deg, var(--red) 0%, rgba(255, 255, 255, 1) 100%); */
     background-color: rgba(238, 238, 240, 0.753);
-    height: 100vh;
+    height: 100dvh;
     width: 100vw;
 }
 
 .bookmaker-odds-wrapper{
     display: flex;
     justify-content: space-around;
+    width: 100%;
+    gap: 20px;
 
     label{
         z-index: 1;
@@ -69,7 +70,7 @@ body{
 
 .card {
     height: 30px;
-    width: 130px;
+    width: 100%;
     border-radius: 7px;
     background-color: rgb(233, 233, 240);
     
@@ -86,9 +87,13 @@ body{
     flex-direction: column; 
     align-items: center; 
     justify-content: center; 
+
+    width: clamp(30px, 100%, 150px);
+
     color: black; 
     height: fit-content; 
     padding-bottom: 7px;
+
 
     label{
         font-size: small; 
