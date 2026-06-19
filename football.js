@@ -1,44 +1,109 @@
-const canvas = document.getElementById("football")
-canvas.width = innerWidth;
-canvas.height = innerHeight - document.getElementById("bottom-part").clientHeight
+const canvas = document.getElementById("football");
 const ctx = canvas.getContext('2d');
+
+const bottomPart = document.getElementById("bottom-part");
+
+function resizeCanvas() {
+  canvas.width = document.body.clientWidth;
+  canvas.height = document.body.clientHeight - bottomPart.clientHeight;
+}
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
 
 const spriteSheet = new Image();
 spriteSheet.src = '/pics/Football.png';
 
-const R = 70;
+const R = Math.min(canvas.width, canvas.height) * 0.1, gravity = 40;
 
-var x = 0;
-var y = 0;
-var vx = 0;
-var vy = 0;
+var x = R, y = R, vx = 400, vy = 1400, vrot = 0;
 
-var clickOffset = [0, 0];
+let lastTime = Date.now();
+let dt = 0;
+function timeEvolution() {
+    dt = (Date.now() - lastTime) / 1000
+
+    vy += gravity;
+    x += vx * dt;
+    y += vy * dt;
+
+    if ((x + R > canvas.width && vx > 0) || (x - R < 0 && vx < 0)) vx *= -0.8;
+    if (y + R > canvas.height) {
+        vy = -Math.max(Math.sqrt(vy ** 2 * 0.8), gravity)
+        // drag
+        vx *= 0.99;
+    }
+    else if (y - R <= 0 && vy < 0) vy *= -0.6;
+
+    lastTime = Date.now();
+
+    return;
+}
+
+let running = true;
 
 function draw() {
-     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-     ctx.drawImage(spriteSheet, x, y, 2 * R, 2 * R)
+    ctx.drawImage(spriteSheet, 155, 155, 710, 710, x - R, y - R, 2 * R, 2 * R);
+
+    // console.log(x, y, vx, vy)
+
+    if(running) {timeEvolution(); requestAnimationFrame(draw);};
 }
+
 spriteSheet.onload = draw
 
-const handleMouseMove = (offset) => (event) => {
-    x = event.clientX + offset.x;
-    y = event.clienty + offset.y;
 
-    draw();
+const handleClick = (event) => {
+    const X = (event.type.startsWith("touch")) ? event.touches[0].clientX : event.clientX
+    const Y = (event.type.startsWith("touch")) ? event.touches[0].clientY : event.clientY
+
+    if (Math.sqrt((X - x)**2 + (Y - y)**2) <= R) {
+        const offset = {"x": x - X, "y": y - Y} 
+
+        moveHandler = handleMove(offset);
+        canvas.addEventListener("mousemove", moveHandler)
+        canvas.addEventListener("touchmove", moveHandler)
+    }
 }
 
-var moveHandler;
-canvas.addEventListener("mousedown", (event) => {
-    if (Math.sqrt((event.clientX - x)**2 + (event.clientY - y)**2) <= R) {
+var lastPositionChange = Date.now()
 
-        const offset = {"x": x - event.clientX, "y": y - event.clientY} 
-        moveHandler = handleMouseMove(offset);
-        canvas.addEventListener("mousemove", moveHandler)
-    }
+const handleMove = (offset) => (event) => {
+    if (event.type.startsWith("touch")) event = event.touches[0];
+
+    running = false;
+
+    const newX = Math.min(canvas.width, Math.max(R, event.clientX + offset.x));
+    const newY = Math.min(canvas.height, Math.max(R, event.clientY + offset.y));
+
+    vx = (newX - x) * 1000 / (Date.now() - lastTime) 
+    vy = (newY - y) * 1000 / (Date.now() - lastTime)
+    x = newX;
+    y = newY;
+
+    draw();
+
+    lastTime = Date.now()
+}
+
+let moveHandler;
+
+canvas.addEventListener("mousedown", handleClick)
+
+canvas.addEventListener("touchstart", handleClick)
+
+
+document.addEventListener("mouseup", (event) => {
+    canvas.removeEventListener("mousemove", moveHandler)
+    running = true;
+    draw();
 })
 
-canvas.addEventListener("click", (event) => {
-    canvas.removeEventListener("mousemove", moveHandler)
+document.addEventListener("touchend", (event) => {
+    canvas.removeEventListener("touchmove", moveHandler)
+    running = true;
+    draw();
 })
