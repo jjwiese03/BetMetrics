@@ -17,22 +17,32 @@ spriteSheet.src = '/pics/Football.png';
 
 const R = Math.min(canvas.width, canvas.height) * 0.1, gravity = 40;
 
-var x = R, y = R, vx = 400, vy = 1400, vrot = 0;
+var x = R, y = R, rot = 0, vx = 400, vy = 1400, wrot = 0;
 
 let lastTime = Date.now();
 let dt = 0;
+
 function timeEvolution() {
     dt = (Date.now() - lastTime) / 1000
 
     vy += gravity;
     x += vx * dt;
     y += vy * dt;
+    rot += wrot * dt;
 
-    if ((x + R > canvas.width && vx > 0) || (x - R < 0 && vx < 0)) vx *= -0.8;
+    if ((x + R > canvas.width && vx > 0) || (x - R < 0 && vx < 0)) {
+        // right || left
+        vx *= -0.8
+    };
+
     if (y + R > canvas.height) {
+        // bottom
         vy = -Math.max(Math.sqrt(vy ** 2 * 0.8), gravity)
         // drag
-        vx *= 0.99;
+        vx *= 0.97;
+
+        // rotation
+        wrot = vx / R;
     }
     else if (y - R <= 0 && vy < 0) vy *= -0.6;
 
@@ -44,11 +54,13 @@ function timeEvolution() {
 let running = true;
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);    
 
-    ctx.drawImage(spriteSheet, 155, 155, 710, 710, x - R, y - R, 2 * R, 2 * R);
-
-    // console.log(x, y, vx, vy)
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    ctx.drawImage(spriteSheet, 155, 155, 710, 710, -R, -R, 2 * R, 2 * R);
+    ctx.restore();
 
     if(running) {timeEvolution(); requestAnimationFrame(draw);};
 }
@@ -68,8 +80,6 @@ const handleClick = (event) => {
         canvas.addEventListener("touchmove", moveHandler)
     }
 }
-
-var lastPositionChange = Date.now()
 
 const handleMove = (offset) => (event) => {
     if (event.type.startsWith("touch")) event = event.touches[0];
