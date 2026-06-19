@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+:root {
+    --red: #E00D17
+}
+
+.body {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.not-selectable {
+  -webkit-user-select: none; /* Chrome, Safari */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge (alt) */
+  user-select: none;         /* Standard */
+}
+
+body{
+    margin: 0;
+    font-family: "Inter", "Open Sans", sans-serif;
+    /* background: linear-gradient(180deg, var(--red) 0%, rgba(255, 255, 255, 1) 100%); */
+    background-color: rgba(238, 238, 240, 0.753);
+    height: 100vh;
+    width: 100vw;
+}
+
+.bookmaker-odds-wrapper{
+    display: flex;
+    justify-content: space-around;
+
+    label{
+        z-index: 1;
+        position: absolute;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        left: 10px;
+        font-size: small;
+    }
+    input{
+        box-sizing: border-box;
+        padding: 0 15px 0 30px;
+
+        font-family: inherit;
+        font-size: 16px;
+        text-align: right;
+        
+
+        outline: none;
+        border: none;
+        
+        transition: all .4s;
+    }
+}
+
+.card {
+    height: 30px;
+    width: 130px;
+    border-radius: 7px;
+    background-color: rgb(233, 233, 240);
+    
+    transition: all .4s;
+
+    &:hover {
+            filter: brightness(0.9);
+            transition: all .4s;
+        }
+}
+
+.cStyle1 {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    color: black; 
+    height: fit-content; 
+    padding-bottom: 7px;
+
+    label{
+        font-size: small; 
+        margin: 5px 0;
+    }
+    h4{
+        margin: 5px 0 ;
+    }
+}
