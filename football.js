@@ -67,7 +67,6 @@ function draw() {
 
 spriteSheet.onload = draw
 
-
 const handleClick = (event) => {
     const X = (event.type.startsWith("touch")) ? event.touches[0].clientX : event.clientX
     const Y = (event.type.startsWith("touch")) ? event.touches[0].clientY : event.clientY
@@ -76,8 +75,8 @@ const handleClick = (event) => {
         const offset = {"x": x - X, "y": y - Y} 
 
         moveHandler = handleMove(offset);
-        canvas.addEventListener("mousemove", moveHandler)
-        canvas.addEventListener("touchmove", moveHandler)
+        document.addEventListener("mousemove", moveHandler)
+        document.addEventListener("touchmove", moveHandler)
     }
 }
 
@@ -86,8 +85,8 @@ const handleMove = (offset) => (event) => {
 
     running = false;
 
-    const newX = Math.min(canvas.width, Math.max(R, event.clientX + offset.x));
-    const newY = Math.min(canvas.height, Math.max(R, event.clientY + offset.y));
+    const newX = Math.min(canvas.width - R, Math.max(R, event.clientX + offset.x));
+    const newY = Math.min(canvas.height - R, Math.max(R, event.clientY + offset.y));
 
     vx = (newX - x) * 1000 / (Date.now() - lastTime) 
     vy = (newY - y) * 1000 / (Date.now() - lastTime)
@@ -101,19 +100,19 @@ const handleMove = (offset) => (event) => {
 
 let moveHandler;
 
-canvas.addEventListener("mousedown", handleClick)
+document.addEventListener("mousedown", handleClick)
 
-canvas.addEventListener("touchstart", handleClick)
+document.addEventListener("touchstart", handleClick)
 
 
 document.addEventListener("mouseup", (event) => {
-    canvas.removeEventListener("mousemove", moveHandler)
+    document.removeEventListener("mousemove", moveHandler)
     running = true;
     draw();
 })
 
 document.addEventListener("touchend", (event) => {
-    canvas.removeEventListener("touchmove", moveHandler)
+    document.removeEventListener("touchmove", moveHandler)
     running = true;
     draw();
 })
