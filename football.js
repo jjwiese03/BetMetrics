@@ -3,9 +3,20 @@ const ctx = canvas.getContext('2d');
 
 const bottomPart = document.getElementById("bottom-part");
 
+
+const R = Math.min(canvas.width, canvas.height) * 0.1, gravity = 40;
+var x = R, y = R, rot = 0, vx = 400, vy = 1400, wrot = 0;
+
+function clamp(value, min, max){
+    return Math.min(max, Math.max(value, min))
+}
+
 function resizeCanvas() {
   canvas.width = document.body.clientWidth;
   canvas.height = document.body.clientHeight - bottomPart.clientHeight;
+
+  x = clamp(R, x, canvas.width - R)
+  y = clamp(R, y, canvas.height - R)
 }
 
 resizeCanvas();
@@ -15,9 +26,6 @@ window.addEventListener("resize", resizeCanvas);
 const spriteSheet = new Image();
 spriteSheet.src = '/pics/Football.png';
 
-const R = Math.min(canvas.width, canvas.height) * 0.1, gravity = 40;
-
-var x = R, y = R, rot = 0, vx = 400, vy = 1400, wrot = 0;
 
 let lastTime = Date.now();
 let dt = 0;
@@ -85,8 +93,8 @@ const handleMove = (offset) => (event) => {
 
     running = false;
 
-    const newX = Math.min(canvas.width - R, Math.max(R, event.clientX + offset.x));
-    const newY = Math.min(canvas.height - R, Math.max(R, event.clientY + offset.y));
+    const newX = clamp(R, event.clientX + offset.x, canvas.width - R);
+    const newY = clamp(R, event.clientY + offset.y, canvas.height - R);
 
     vx = (newX - x) * 1000 / (Date.now() - lastTime) 
     vy = (newY - y) * 1000 / (Date.now() - lastTime)
