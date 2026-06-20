@@ -24,7 +24,7 @@ window.addEventListener("resize", resizeCanvas);
 
 
 const spriteSheet = new Image();
-spriteSheet.src = '/pics/Football.png';
+spriteSheet.src = 'pics/Football.png';
 
 
 let lastTime = Date.now();
